@@ -1,5 +1,4 @@
-# React-and-Django-Rest-Shop
-E-commerce
+# React-and-Django-Rest-Shop-E-commerce
 Изначально проект написан на Django, далее в /backend/store/api вынесен в API с помощью Django Rest Framework и фронтенд переработан на React.
 В версии на React дописан рейтинг товара(звёзды).
 
