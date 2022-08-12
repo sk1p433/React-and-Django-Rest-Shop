@@ -1,0 +1,38 @@
+{% extends "store/base.html" %}
+{% load bootstrap4 %}
+
+{% block page_header %}
+  <h1>Адреса магазинов</h1>
+{% endblock page_header %}
+
+{% block content %}
+<div class="table-responsive">
+<table class="table">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Адрес</th>
+      <th>Время работы</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class='success'>
+        <td>PC Shop на горе</td>
+        <td>улица Мира 657</td>
+        <td>с 00:00 до 20:00</td>
+    </tr>
+      <tr class='success'>
+      <td>PC Shop на горбушке</td>
+      <td>улица Ленина 8585</td>
+      <td>с 08:00 до 18:00</td>
+    </tr>
+    <tr class='success'>
+    <td>PC Shop центральный</td>
+    <td>улица Попова 1111</td>
+    <td>с 10:00 до 22:00</td>
+  </tr>
+  </tbody>
+  </table>
+</div>
+
+    {% endblock content %}

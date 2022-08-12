@@ -1,0 +1,177 @@
+{% extends "store/base.html" %}
+{% load bootstrap4 %}
+{% load static %}
+
+
+{% block page_header %}
+  <h1>{{ object }}</h1>
+
+{% endblock page_header %}
+
+{% block content %}
+<div class="card">
+  <h5 class="card-header"><small>Добавлен {{ object.created }}</small></h5>
+  <div class="card-body">
+    <h5 class="card-title text-center">{{ object.name }}</h5>
+    {% if object.image %}
+    <img class="col-8 img-fluid rounded mx-auto d-block" src="{{ product.image.url }}" alt="Responsive image">
+    {% else %}
+    <p></p>
+    {% endif %}
+    <p>Цена {{ object.price }}</p>
+    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+    {{ cart_product_form }}
+    {% csrf_token %}
+    <input type="submit" class="btn btn-primary" value="Добавить в корзину">
+    </form>
+    <br><br>
+    <p>{{ object.description }}</p>
+    </div>
+</div>
+<br><br>
+<h2>{% for message in messages %} <div class="p-3 mb-2 bg-warning text-dark"> {{ message }} Пожалуйста, <a href="{% url 'store:register' %}">зарегистрируйтесь</a> или <a href="{% url 'store:login' %}">авторизуйтесь</a> </div> {% endfor %}</h2>
+
+<span class="current">
+ Страница {{ comments.number }} из {{ comments.paginator.num_pages }}.
+</span>
+<ul class="pagination">
+   {% if comments.has_previous %}
+       <li class="page-item"><a class="page-link" href="?page=1">&laquo; Первая</a></li>
+       <li class="page-item"><a class="page-link" href="?page={{ comments.previous_page_number }}">Предыдущая</a></li>
+   {% endif %}
+
+
+
+   {% if comments.has_next %}
+       <li class="page-item"><a class="page-link" href="?page={{ comments.next_page_number }}">Следующая</a></li>
+       <li class="page-item"><a class="page-link" href="?page={{ comments.paginator.num_pages }}">Последняя &raquo;</a></li>
+   {% endif %}
+</ul>
+<div class="container">
+     <div class="row py-3">
+         <div class="col-3 order-2" id="sticky-sidebar">
+           <div class="sticky-top">
+             <form id="UserCommentForm" method='post' class="form">
+               {% csrf_token %}
+               {% bootstrap_form form %}
+
+               {% buttons %}
+                 <button name="submit" class="btn btn-primary">Добавить комментарий</button>
+               {% endbuttons %}
+           </form>
+         </div>
+       </div>
+    <div class="col" id="main">
+      <h3>Комментарии:</h3>
+       {% for comment in comments %}
+       <h6 class="card-header">
+       {{ comment.author }}<small> добавлен {{ comment.created_at|date:'M d, Y H:i' }} </small>
+       </h6>
+        <div class="card-body">
+        <h4>{{ comment }}</h4>
+        <form id="like-{{comment.pk}}" method="POST" action="{% url 'store:add_like' comment.pk %}">
+                    {% csrf_token %}
+
+                    <button style="background-color: transparent; border: none; box-shadow: none;" type="submit">
+                        <a class="btn btn-success" id="like-count-{{comment.pk}}"> Likes {{ comment.likes.all.count }}</a>
+                    </button>
+                </form>
+        <form id="dislike-{{comment.pk}}" method="POST" action="{% url 'store:add_dislike' comment.pk %}">
+                    {% csrf_token %}
+
+                    <button style="background-color: transparent; border: none; box-shadow: none;" type="submit">
+                        <a class="btn btn-danger" id="dislike-count-{{comment.pk}}"> Dislikes {{ comment.dislikes.all.count }}</a>
+                    </button>
+                </form>
+
+        </div>
+        {% empty %}
+        <p>Для данного товара  ещё нет комментариев.</p>
+
+        {% endfor %}
+
+              </div>
+        </div>
+    </div>
+
+
+    {% block javascript %}
+
+    <script type="text/javascript">
+
+    $(document).ready(function(){
+
+
+       $("#UserCommentForm").submit(function(e){
+    	// prevent from normal form behaviour
+
+          	e.preventDefault();
+        	// serialize the form data
+
+
+          	var serializedData = $(this).serialize();
+          	$.ajax({
+          		type : 'POST',
+          		url :  "{% url 'store:ajax_receiver' %}",
+                data : serializedData,
+          		success : function(response){
+                  location.reload();
+                  $("#UserCommentForm")[0].reset();
+
+              },
+          		error : function(response){
+                    alert("Комментарии доступны только для авторизованных пользователей");
+          			console.log(response)
+          		}
+          	});
+       });
+
+       $('[id^="like-"]').submit(function(e){
+
+          	e.preventDefault();
+            var endpoint = $(this).attr('action');
+            var serializedData = $(this).serializeArray();
+      $.ajax({
+               type: 'POST',
+               url: endpoint,
+               data: serializedData,
+               success: function(response) {
+                     $( "#like-count-"+response["id"].toString()).text("Likes "+response["like_count"]);
+                     $( "#dislike-count-"+response["id"].toString()).text("Dislikes "+response["dislike_count"]);
+
+                },
+                error: function() {
+                       alert("Лайки доступны только для авторизованных пользователей");
+                }
+          });
+    })
+
+        $('[id^="dislike-"]').submit(function(e){
+
+          	e.preventDefault();
+            var endpoint = $(this).attr('action');
+            var serializedData = $(this).serializeArray();
+      $.ajax({
+               type: 'POST',
+               url: endpoint,
+               data: serializedData,
+               success: function(response) {
+                     $( "#like-count-"+response["id"].toString()).text("Likes "+response["like_count"]);
+                     $( "#dislike-count-"+response["id"].toString()).text("Dislikes "+response["dislike_count"]);
+
+                },
+                error: function() {
+                       alert("Дислайки доступны только для авторизованных пользователей");
+                }
+          });
+    })
+
+    });
+
+
+    </script>
+
+    {% endblock javascript %}
+
+
+{% endblock content %}

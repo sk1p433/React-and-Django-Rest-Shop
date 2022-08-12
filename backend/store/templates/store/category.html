@@ -1,0 +1,31 @@
+{% extends "store/base.html" %}
+{% load bootstrap4 %}
+{% load static %}
+
+
+{% block page_header %}
+  <h1>{{ object }}</h1>
+{% endblock page_header %}
+
+{% block content %}
+
+{% for product in object.products.all %}
+<div class="card">
+  <h5 class="card-header"><small>Добавлен {{ product.created }}</small></h5>
+  <div class="card-body">
+    <h5 class="card-title text-center">{{ product.name }}</h5>
+    {% if product.image %}
+    <img class="col-8 img-fluid rounded mx-auto d-block" src="{{ product.image.url }}" alt="Responsive image">
+    {% else %}
+    <p></p>
+    {% endif %}
+    <p>Цена {{ product.price }}</p>
+    <a href="{{ product.get_absolute_url }}" class="btn btn-primary">Подробнее о товаре</a>
+    </div>
+</div>
+<br>
+
+{% endfor %}
+
+
+{% endblock content %}

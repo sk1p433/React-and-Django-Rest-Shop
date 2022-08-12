@@ -1,0 +1,28 @@
+{% extends "store/base.html" %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block page_header %}
+  <h1> Оплата  </h1>
+{% endblock page_header %}
+
+{% block content %}
+<div class="order-info">
+    <h3>Ваш заказ</h3>
+    <ul>
+      {% for item in cart %}
+      <li>
+        {{ item.quantity }}x {{ item.product.name }}
+        <span>${{ item.total_price }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    <p>В сумме на ${{ cart.get_total_price }}</p>
+</div>
+<form action="." method="post" class="order-form">
+{% bootstrap_form form %}
+<p><input type="submit" class="btn btn-primary" value="Подвердить заказ"></p>
+{% csrf_token %}
+</form>
+
+{% endblock content %}

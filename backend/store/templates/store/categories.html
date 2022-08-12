@@ -1,0 +1,25 @@
+{% extends "store/base.html" %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block header_parent %}
+<!-- Nothing here (to override this portion defined in the parent template) -->
+{% endblock %}
+
+{% block page_header %}
+  <h1>Выберите категорию</h1>
+{% endblock page_header %}
+
+
+
+{% block content %}
+{% for object in object_list %}
+
+<div class="list-group">
+    <a href="{{ object.get_absolute_url }}" class="list-group-item list-group-item-action list-group-item-dark"><h1>{{ object }}</h1><br><br><p>{{ object.describe }}</p></a>
+</div>
+<br>
+{% endfor %}
+
+
+{% endblock content %}

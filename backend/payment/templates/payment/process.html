@@ -1,0 +1,85 @@
+{% extends "store/base.html" %}
+{% load bootstrap4 %}
+{% load static %}
+
+
+{% block page_header %}
+ <h1>Оплата картой</h1>
+{% endblock page_header %}
+
+{% block content %}
+
+
+ <form id="payment" method="post">
+    <label for="card-number">Номер карты</label>
+    <div class="form-control" id="card-number"></div>
+    <small class="form-text text-muted">Номер карты в формате XXXX XXXX XXXX XXXX</small>
+
+    <label for="cvv">CVV</label>
+    <div class="form-control" id="cvv" class="field"></div>
+    <small class="form-text text-muted">Ваш трёхзначный код безопасности</small>
+
+    <label for="expiration-date">Срок действия карты</label>
+    <div class="form-control" id="expiration-date" class="field"></div>
+    <small class="form-text text-muted">Срок действия карты в формате месяц/год, пример 10/2022</small>
+    <br><br>
+    <input type="hidden" id="nonce" name="payment_method_nonce" value="">
+    {% csrf_token %}
+    <input type="submit" class="btn btn-primary" value="Оплатить">
+ </form>
+
+{% block javascript %}
+ <script src="https://js.braintreegateway.com/web/3.85.1/js/client.min.js"></script>
+ <script src="https://js.braintreegateway.com/web/3.85.1/js/hosted-fields.min.js"></script>
+ <script type="text/javascript">
+    var form = document.querySelector('#payment');
+    var submit = document.querySelector('input[type="submit"]');
+
+    braintree.client.create({
+      authorization: '{{ client_token }}'
+    }, function (clientErr, clientInstance) {
+      if (clientErr) {
+        console.error(clientErr);
+        return;
+      }
+
+      braintree.hostedFields.create({
+        client: clientInstance,
+        styles: {
+          'input': {'font-size': '13px'},
+          'input.invalid': {'color': 'red'},
+          'input.valid': {'color': 'green'}
+        },
+        fields: {
+          number: {selector: '#card-number'},
+          cvv: {selector: '#cvv'},
+          expirationDate: {selector: '#expiration-date'}
+        }
+      }, function (hostedFieldsErr, hostedFieldsInstance) {
+        if (hostedFieldsErr) {
+          console.error(hostedFieldsErr);
+          return;
+        }
+
+        submit.removeAttribute('disabled');
+
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+
+          hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+            if (tokenizeErr) {
+              console.error(tokenizeErr);
+              return;
+            }
+            // set nonce to send to the server
+            document.getElementById('nonce').value = payload.nonce;
+            // submit form
+            document.getElementById('payment').submit();
+          });
+        }, false);
+      });
+    });
+  </script>
+{% endblock javascript %}
+
+{% endblock content %}

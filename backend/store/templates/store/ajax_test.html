@@ -1,0 +1,90 @@
+{% extends "store/base.html" %}
+{% load bootstrap4 %}
+
+{% block page_header %}
+  <h1>тестирую fetch</h1>
+{% endblock page_header %}
+
+{% block content %}
+
+    <div id="dynamic-content"></div>
+
+
+
+    {% block javascript %}
+        <script>
+
+        var html = document.getElementById('dynamic-content')
+
+    function buildCards(data){
+    let container = document.createElement('div');
+    container.className = "container row align-items-stretch row-cols-1 row-cols-sm-2 row-cols-md-4 g-3";
+
+    for(var i = 0; i < data.length; i++){
+    let col = document.createElement('div');
+    let card = document.createElement('div');
+    let img = document.createElement('img');
+    let body = document.createElement('p');
+    let add_cart = document.createElement('button');
+    let description = document.createElement('button');
+
+    col.className = "col d-flex align-items-stretch";
+    card.className = "card shadow-sm";
+    card.setAttribute("role", "button");
+    img.className = "img-fluid m-1";
+    body.className = "card-body p-2";
+    body.innerHTML = data[i].title;
+    add_cart.className = "btn btn-primary m-1";
+    add_cart.setAttribute("data-product", data[i].title);
+    add_cart.setAttribute("type", "button");
+    add_cart.innerHTML = "Добавить в корзину";
+    description.className = "btn btn-secondary m-1";
+    description.setAttribute("type", "button");
+    description.innerHTML = "Подробнее";
+
+    add_cart.addEventListener('click', function(){
+      console.log('Вы добавили в корзину товар:', this.dataset.product)
+    })
+
+
+    if ("image" in data[i]){
+      img.src = data[i].image;
+    }else{
+      img.src = "/showcase/default.png";
+    }
+    card.appendChild(img);
+    card.appendChild(body);
+    card.appendChild(add_cart);
+    card.appendChild(description);
+    col.appendChild(card);
+    container.appendChild(col);
+  }
+  html.append(container);
+}
+
+
+
+
+
+        fetch('/fetch_test/')
+  .then((response) => {
+    return response.json();
+  })
+  .then((data) => {
+     buildCards(data);
+  });
+
+
+
+    </script>
+    {% endblock javascript %}
+
+
+{% endblock content %}
+
+
+
+{% comment %}
+
+
+{% endcomment %}

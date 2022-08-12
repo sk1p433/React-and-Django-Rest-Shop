@@ -1,0 +1,106 @@
+{% extends "store/base.html" %}
+{% load bootstrap4 %}
+{% load static %}
+
+
+{% block page_header %}
+  <h1>Личный кабинет</h1>
+
+{% endblock page_header %}
+
+{% block content %}
+
+{% if messages %}
+     {% for message in messages %}
+       {% if message.tags == 'error' %}
+       <div class="shadow-custom messages alert alert-danger text-center col-lg-7 mx-auto">
+       {% else %}
+       <div class="shadow-custom messages alert alert-success text-center col-lg-7 mx-auto">
+       {% endif %}
+         {{ message }}
+       <a href="" class="close">x</a>
+       </div>
+     {% endfor %}
+  {% endif %}
+
+      <h2> Ваши данные</h2>
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-field">
+              <label for="first_name">Имя</label>
+              {{ profile_form.first_name }}
+          </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-field">
+              <label for="last_name">Фамилия</label>
+              {{ profile_form.last_name }}
+            </div>
+         </div>
+         <div class="col-md-6">
+           <div class="input-field">
+             <label for="email">Email</label>
+             {{ profile_form.email }}
+           </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-field">
+            <label for="postal_code">Почтовый индекс</label>
+            {{ profile_form.postal_code }}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-field">
+            <label for="address">Адрес</label>
+            {{ profile_form.address }}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-field">
+            <label for="city">Город</label>
+            {{ profile_form.city }}
+          </div>
+        </div>
+      </div>
+      <br>
+    <div class="text-center">
+     <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Заполните новые данные и нажмите'Обновить данные'">Обновить данные</button>
+    </div>
+  </form>
+  <br>
+
+
+<h3 class="text-center">История ваших заказов:</h3>
+{% for order in request.user.orders.all %}
+<div class="card">
+  <div class="card-header">
+    Заказ {{ order.id }} от <small> {{ order.created|date }} </small> Статус заказа: {{ order.paid|yesno:"оплачен,не оплачен,ничего" }}
+  </div>
+  <div class="card-body">
+      {% for item in order.items.all %}
+
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+              <a href="{{ item.product.get_absolute_url }}" class="card-text">{{ item.product }}</a><br><small>{{ item.quantity }} шт. </small> 
+          </div>
+          <div class="col-sm">
+            <img class="col-5 img-fluid rounded mx-auto d-block" src="{% if item.product.image %}{{ item.product.image.url }}
+            {% else %}{% static 'img/no_image.png' %}{% endif %}">
+            <br>
+          </div>
+         </div>
+     </div>
+       {% endfor %}
+        <h4 class="card-text">Итого ${{ order.get_total_cost|floatformat:2 }}</h4>
+  </div>
+</div>
+<br>
+{% empty %}
+{% endfor %}
+
+
+
+{% endblock content %}
