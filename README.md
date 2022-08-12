@@ -27,6 +27,12 @@
 Оплата
 ![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo5.png)
 
+Авторизация
+![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo8.png)
+
+Регистрация
+![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo9.png)
+
 
 
 
