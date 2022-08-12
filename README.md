@@ -20,7 +20,7 @@
 ![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo6.png)
 
 Раздел комментариев
-![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo7.png)
+![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo10.png)
 
 Профиль
 ![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo2.png)
