@@ -7,4 +7,4 @@
 К товарам доступна система оценки: рейтинг товара(звёзды) и комментирование, к комментариям можно ставить лайки или дизлайки.
 
 Скриншоты магазина:
-[[https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo1.png|width=100px]]
+https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo1.png
