@@ -7,6 +7,30 @@
 К товарам доступна система оценки: рейтинг товара(звёзды) и комментирование, к комментариям можно ставить лайки или дизлайки.
 
 Скриншоты магазина:
+Каталог
 ![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo1.png)
+
+Страница товара
+![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo6.png)
+
+Раздел комментариев
+![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo7.png)
+
+Профиль
+![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo2.png)
+
+Корзина
+![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo3.png)
+
+Оформление заказа
+![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo4.png)
+
+Оплата
+![alt text](https://github.com/sk1p433/React-and-Django-Rest-Shop/blob/master/backend/photos/photo5.png)
+
+
+
+
+
 
 
